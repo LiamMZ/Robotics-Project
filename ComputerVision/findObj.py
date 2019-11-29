@@ -13,7 +13,7 @@ target = None
 
 def callback_search_target(data):
     global target
-    target = data
+    target = str(data)
 
 def init():
     global subscriber_voicerec
@@ -37,6 +37,19 @@ def main():
         if target != None:
             image = None
             targetLoc = CV.findTarget(image, target)
+            if targetLoc[0]==-1:
+                foundMSG = String()
+                foundMSG.data = "False"
+                publisher_foundobj.publish(foundMSG)
+            else:
+                foundMSG = String()
+                foundMSG.data = "True"
+                publisher_foundobj.publish(foundMSG)
+                locMSG = Pose2D()
+                locMSG.x = targetLoc[0]
+                locMSG.y = targetLoc[1]
+                locMSG.theta = 0
+                publisher_objloc.publish(locMSG)
 
 
 
