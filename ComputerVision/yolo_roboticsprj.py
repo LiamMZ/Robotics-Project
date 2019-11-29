@@ -3,13 +3,12 @@ import argparse
 import numpy as np
 
 class ComputerVision:
-    def __init__(self, args, target):
+    def __init__(self, args):
         with open(args.classes, 'r') as f:
             self.classes = [line.strip() for line in f.readlines()]
         
         #build net using weights argument and net conficuration argument
         self.net = cv2.dnn.readNet(args.weights, args.config)
-        self.target = target
     
     def get_output_layers(self):
         layer_names = self.net.getLayerNames()
@@ -18,7 +17,7 @@ class ComputerVision:
 
         return output_layers
     
-    def findTarget(self, image):
+    def findTarget(self, image, target):
         Width = image.shape[1]
         Height = image.shape[0]
         scale = 0.00392
@@ -57,7 +56,7 @@ class ComputerVision:
         indices = [i[0] for i in indices]
         class_ids = [class_ids[i] for i in indices]
         center = [-1,-1]
-        if self.classes.index(self.target) in class_ids:
-            index = class_ids.index(self.classes.index(self.target))
+        if self.classes.index(target) in class_ids:
+            index = class_ids.index(self.classes.index(target))
             center = [round((boxes[index][0]+boxes[index][2])/2), round((boxes[index][1]+boxes[index][3])/2)]
         return center
