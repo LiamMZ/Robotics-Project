@@ -4,7 +4,7 @@ from geometry_msgs import Pose2D
 from std_msgs.msg import String
 from yolo_roboticsprj import ComputerVision
 
-
+src = 1
 subscriber_voicerec = None
 publisher_foundobj = None
 publisher_objloc = None
@@ -24,7 +24,7 @@ def init():
     publisher_objloc = rospy.Publisher('/objectLocation', Pose2D, queue_size=10)
 
 def main():
-    global subscriber_voicerec, target
+    global subscriber_voicerec, target, src
     global publisher_objloc, publisher_foundobj
     args = {"config": "yolo3.cfg",
             "weights": "yolo3.weights",
@@ -33,10 +33,11 @@ def main():
     rospy.init_node("ComputerVision")
     init()
     CV = ComputerVision(args)
+    cap = cv2.VideoCapture(src)
     while not rospy.is_shutdown():
         if target != None:
-            image = None
-            targetLoc = CV.findTarget(image, target)
+            ret, frame = cap.read()
+            targetLoc = CV.findTarget(frame, target)
             if targetLoc[0]==-1:
                 foundMSG = String()
                 foundMSG.data = "False"
@@ -50,6 +51,7 @@ def main():
                 locMSG.y = targetLoc[1]
                 locMSG.theta = 0
                 publisher_objloc.publish(locMSG)
+    cap.release()
 
 
 
