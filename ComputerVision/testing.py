@@ -1,6 +1,6 @@
 import rospy
 import json
-from geometry_msgs import Pose2D
+from geometry_msgs.msg import Pose2D
 from std_msgs.msg import String
 
 publisher_voicerec = None
@@ -32,7 +32,7 @@ def main():
     while not rospy.is_shutdown():
         if count == 0:
             testVoiceRec = String()
-            testVoiceRec.data = "Person"
+            testVoiceRec.data = "person"
             publisher_voicerec.publish(testVoiceRec)
         
 

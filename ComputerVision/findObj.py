@@ -1,6 +1,7 @@
 import rospy
+import cv2
 import json
-from geometry_msgs import Pose2D
+from geometry_msgs.msg import Pose2D
 from std_msgs.msg import String
 from yolo_roboticsprj import ComputerVision
 
@@ -23,12 +24,13 @@ def init():
     publisher_foundobj = rospy.Publisher('/foundObject', String, queue_size=10)
     publisher_objloc = rospy.Publisher('/objectLocation', Pose2D, queue_size=10)
 
+
 def main():
     global subscriber_voicerec, target, src
     global publisher_objloc, publisher_foundobj
-    args = {"config": "yolo3.cfg",
-            "weights": "yolo3.weights",
-            "classes": "yolo3.txt"}
+    args = {"config": "yolov3.cfg",
+            "weights": "yolov3.weights",
+            "classes": "yolov3.txt"}
 
     rospy.init_node("ComputerVision")
     init()
@@ -37,6 +39,7 @@ def main():
     while not rospy.is_shutdown():
         if target != None:
             ret, frame = cap.read()
+            target = json.JSONDecoder(target).data
             targetLoc = CV.findTarget(frame, target)
             if targetLoc[0]==-1:
                 foundMSG = String()
