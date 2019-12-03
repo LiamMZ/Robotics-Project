@@ -58,5 +58,5 @@ class ComputerVision:
         center = [-1,-1]
         if self.classes.index(target) in class_ids:
             index = class_ids.index(self.classes.index(target))
-            center = [round((boxes[index][0]+boxes[index][2])/2), round((boxes[index][1]+boxes[index][3])/2)]
+            center = [round((boxes[index][0]+boxes[index][2])/2), round((boxes[index][1]+boxes[index][3]))]
         return center
