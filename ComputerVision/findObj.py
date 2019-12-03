@@ -4,7 +4,7 @@ from geometry_msgs import Pose2D
 from std_msgs.msg import String
 from yolo_roboticsprj import ComputerVision
 
-src = 1
+src = 0
 subscriber_voicerec = None
 publisher_foundobj = None
 publisher_objloc = None
