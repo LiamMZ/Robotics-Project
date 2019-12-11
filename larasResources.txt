@@ -4,5 +4,9 @@ https://github.com/rupumped/sawyer_pykdl/blob/master/scripts/sawyer_kinematics.p
 
 https://levelup.gitconnected.com/the-easy-guide-to-python-command-line-arguments-96b4607baea1
 
+run kinematics.forward_position_kinematics()
+
+the pos and orientation variables come from forward kinematics since sawyer and pykdl are not using the same coordinate system
+
 
 
