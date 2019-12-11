@@ -17,7 +17,7 @@ gripper.open()
     #to get positions: there is an object in a predetermined location, physically move arm to specific location, save joint angles
 
 #go to object
-obj_pos = [0.0, 0.0, 0.0]
+obj_pos = [0.5, 0.5, 0, 0.4, 0.5, 0.5, -0.4]
 obj_joint = kinematics.inverse_kinematics(obj_pos)
 obj_dest = (zip(limb._joint_names, obj_joint))
 
@@ -28,7 +28,7 @@ limb.move_to_joint_positions(dict(obj_dest))
 gripper.close()
 
 #move object along one axis
-axis_pos = [0.0, 0.0, 0.5]
+axis_pos = [0.5, -0.3, 0.0, 0.4, 0.5, 0.5, -0.5]
 axis_joint = kinematics.inverse_kinematics(axis_pos)
 axis_dest = (zip(limb._joint_names, axis_joint))
 

@@ -1,0 +1,8 @@
+https://github.com/RethinkRobotics/sawyer_simulator/blob/master/sawyer_sim_examples/scripts/ik_pick_and_place_demo.py 
+
+https://github.com/rupumped/sawyer_pykdl/blob/master/scripts/sawyer_kinematics.py
+
+https://levelup.gitconnected.com/the-easy-guide-to-python-command-line-arguments-96b4607baea1
+
+
+
