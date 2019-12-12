@@ -32,10 +32,10 @@ except:
 import rospy
 from std_msgs.msg import String
  
-rospy.init_node('voicePub')
+# rospy.init_node('voicePub')
  
-publisher = rospy.Publisher('/speech_recognition', String, queue_size=1)
+# publisher = rospy.Publisher('/speech_recognition', String, queue_size=1)
 
-publisher.publish(word)
+# publisher.publish(word)
  
 
