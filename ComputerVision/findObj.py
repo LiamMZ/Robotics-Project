@@ -1,10 +1,12 @@
 import rospy
+import cv2
 import json
-from geometry_msgs import Pose2D
+from geometry_msgs.msg import Pose2D
 from std_msgs.msg import String
 from yolo_roboticsprj import ComputerVision
+from realPoseFromPixels import FindWorldPoseFromPixels
 
-src = 1
+src = 0
 subscriber_voicerec = None
 publisher_foundobj = None
 publisher_objloc = None
@@ -13,7 +15,7 @@ target = None
 
 def callback_search_target(data):
     global target
-    target = str(data)
+    target = str(data.data)
 
 def init():
     global subscriber_voicerec
@@ -23,12 +25,13 @@ def init():
     publisher_foundobj = rospy.Publisher('/foundObject', String, queue_size=10)
     publisher_objloc = rospy.Publisher('/objectLocation', Pose2D, queue_size=10)
 
+
 def main():
     global subscriber_voicerec, target, src
     global publisher_objloc, publisher_foundobj
-    args = {"config": "yolo3.cfg",
-            "weights": "yolo3.weights",
-            "classes": "yolo3.txt"}
+    args = {"config": "yolov3.cfg",
+            "weights": "yolov3.weights",
+            "classes": "yolov3.txt"}
 
     rospy.init_node("ComputerVision")
     init()
@@ -37,6 +40,7 @@ def main():
     while not rospy.is_shutdown():
         if target != None:
             ret, frame = cap.read()
+            target = target
             targetLoc = CV.findTarget(frame, target)
             if targetLoc[0]==-1:
                 foundMSG = String()
@@ -46,9 +50,11 @@ def main():
                 foundMSG = String()
                 foundMSG.data = "True"
                 publisher_foundobj.publish(foundMSG)
+                posConverter = FindWorldPoseFromPixels(frame)
+                realPos = posConverter.calc_pose(targetLoc)
                 locMSG = Pose2D()
-                locMSG.x = targetLoc[0]
-                locMSG.y = targetLoc[1]
+                locMSG.x = realPos[0]
+                locMSG.y = realPos[1]
                 locMSG.theta = 0
                 publisher_objloc.publish(locMSG)
     cap.release()
