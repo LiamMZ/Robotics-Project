@@ -71,7 +71,7 @@ def expand_nr(img_mask, cur_coord):
     cur_coordinate = coordinate_list.pop() # Take the first coordinate in the list and perform 'expand' on it
     # TODO: Check to make sure cur_coordinate is in bounds, otherwise 'continue'
     # TODO: Check to see if the value is 0, if so, 'continue'
-    if  (cur_coordinate[0]<0 or cur_coordinate[0]>img_mask.shape[0]) or (cur_coordinate[1]<0 or cur_coordinate[1]>img_mask.shape[1]) or img_mask[cur_coordinate[0], cur_coordinate[1]]==0:
+    if  (cur_coordinate[0]<0 or cur_coordinate[0]>img_mask.shape[0]-1) or (cur_coordinate[1]<0 or cur_coordinate[1]>img_mask.shape[1]-1) or img_mask[cur_coordinate[0], cur_coordinate[1]]==0:
       continue
 
     # TODO: Set image mask at this coordinate to 0
@@ -140,7 +140,7 @@ def get_blob_centroids(blobs_list):
 def main():
     src = 0
     global color_ranges
-    add_color_range_to_detect([96,39,39], [255,200,200]) # Detect blue
+    add_color_range_to_detect([170,39,39], [255,140,120]) # Detect blue
     cap = cv2.VideoCapture(src)
     ret, frame = cap.read()
     img = frame
@@ -158,12 +158,13 @@ def main():
 
     ########## PART 4 (Brad's Homework) ############
     # Display images and blob annotations
+    posList = []
     img_markup = img.copy()
     for obj_pos in object_positions_list:
         obj_pos_vector = np.array(obj_pos).astype(np.int32) # In case your object positions weren't numpy arrays
         img_markup = cv2.circle(img_markup,(obj_pos_vector[1], obj_pos_vector[0]),5,(0,0,0),10)
-        print("Object pos: " + str(obj_pos_vector))
-
+        poslist.append([obj_pos_vector[1], obj_pos_vector[0]])
+        
     # Display the original image, the mask, and the original image with object centers drawn on it
     # Objective: Show that your algorithm works by displaying the results!
     #

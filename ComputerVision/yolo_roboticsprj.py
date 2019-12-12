@@ -4,11 +4,11 @@ import numpy as np
 
 class ComputerVision:
     def __init__(self, args):
-        with open(args.classes, 'r') as f:
+        with open(args["classes"], 'r') as f:
             self.classes = [line.strip() for line in f.readlines()]
         
         #build net using weights argument and net conficuration argument
-        self.net = cv2.dnn.readNet(args.weights, args.config)
+        self.net = cv2.dnn.readNet(args['weights'], args['config'])
     
     def get_output_layers(self):
         layer_names = self.net.getLayerNames()
@@ -56,7 +56,10 @@ class ComputerVision:
         indices = [i[0] for i in indices]
         class_ids = [class_ids[i] for i in indices]
         center = [-1,-1]
-        if self.classes.index(target) in class_ids:
-            index = class_ids.index(self.classes.index(target))
-            center = [round((boxes[index][0]+boxes[index][2])/2), round((boxes[index][1]+boxes[index][3]))]
+        ided = [self.classes[i] for i in class_ids]
+        print(ided)
+        if target in self.classes:
+            if self.classes.index(target) in class_ids:
+                index = class_ids.index(self.classes.index(target))
+                center = [round((boxes[index][0]+boxes[index][2])/2), round((boxes[index][1]+boxes[index][3]))]
         return center
