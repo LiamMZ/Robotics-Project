@@ -1,0 +1,76 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "sawyer arm",
+            "intents": [
+                {
+                    "name": "MessageIntent",
+                    "slots": [
+                        {
+                            "name": "item",
+                            "type": "Objects"
+                        }
+                    ],
+                    "samples": [
+                        "pick up the {item}"
+                    ]
+                },
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": [
+                        "Cancel"
+                    ]
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": [
+                        "stop "
+                    ]
+                },
+                {
+                    "name": "HelloWorldIntent",
+                    "slots": [],
+                    "samples": [
+                        "hello",
+                        "how are you",
+                        "say hi world",
+                        "say hi",
+                        "hi",
+                        "say hello world",
+                        "say hello"
+                    ]
+                },
+                {
+                    "name": "AMAZON.NavigateHomeIntent",
+                    "samples": []
+                }
+            ],
+            "types": [
+                {
+                    "name": "Objects",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "bottle"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "shoe"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "cup"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
