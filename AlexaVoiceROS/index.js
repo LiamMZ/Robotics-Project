@@ -4,7 +4,11 @@ var ROSLIB = require('roslib')
 
 
 var ros = new ROSLIB.Ros({
+<<<<<<< HEAD
     url : 'wss://localhost:9090' // This was a test I did at home using my public ip(port 9090 is what ROS defaults to)
+=======
+    url : 'INSERT YOURS HERE'
+>>>>>>> 22775a8f1df521e1f06506eea526047dc9e4de96
 });
 
 var talk = 'not connected';
@@ -54,17 +58,29 @@ TM.prototype.eventHandlers.onSessionEnded = function (sessionEndedRequest, sessi
 
 TM.prototype.intentHandlers = {
     "MessageIntent": function (intent, session, response) {
+<<<<<<< HEAD
         var msg = new ROSLIB.Message({ // "item" is the slot value turned to text
             data : intent.slots.item.value
         });
         speech.publish(msg);
 	    response.ask('Testing.'); // This is for testing, remove later?
+=======
+        var msg = new ROSLIB.Message({
+            data : intent.slots.Message.value
+        });
+        speech.publish(msg);
+	response.ask('');
+>>>>>>> 22775a8f1df521e1f06506eea526047dc9e4de96
     },
     "AMAZON.StopIntent": function (intent, session, response) {
         response.tell('goodbye');
     },
     "AMAZON.CancelIntent": function (intent, session, response) {
+<<<<<<< HEAD
         response.tell('Cancelling');
+=======
+        response.tell('');
+>>>>>>> 22775a8f1df521e1f06506eea526047dc9e4de96
     }
 };
 
