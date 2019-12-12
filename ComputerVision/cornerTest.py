@@ -1,20 +1,11 @@
-# CSCI 3302: Homework 4 -- Object Detection via background subtraction and color filtering
-# Using Color Filtering with Blob Detection to find objects using a webcam
-# Please do not collaborate on this assignment -- your code must be your own!
-
-# TODO: INSERT YOUR NAME HERE
-LAST_NAME = "Merz Hoffmeister"
-
 import pdb
 import pickle
 import random
 import copy
 import cv2 # You may have to "pip install opencv-contrib-python" to install this
-import numpy as np # You may have to "pip install numpy" to install this
+import numpy as np # You may have to "pip install numpy" to install thi
+from operator import itemgetter
 
-# List of color ranges to look for... but stored in BGR order because that's how OpenCV does it
-# Example: color_ranges = [((0,0,100), (0,0,255)), ((0,100,0), (0,255,0))]
-#                         Dark Red to Bright Red    Dark Green to Bright Green
 color_ranges = []
 
 def add_color_range_to_detect(lower_bound, upper_bound):
@@ -22,6 +13,7 @@ def add_color_range_to_detect(lower_bound, upper_bound):
   color_ranges.append([lower_bound, upper_bound]) # Add color range to global list of color ranges to detect
 
 def check_if_color_in_range(bgr_tuple):
+  global color_ranges
   for entry in color_ranges:
     lower, upper = entry[0], entry[1]
     in_range = True
@@ -64,31 +56,6 @@ def do_color_filtering(img):
         mask[y,x] = 1
 
   return mask
-
-def expand(img_mask, cur_coordinate, coordinates_in_blob):
-  # Find all of the non-zero pixels connected to a location
-
-  # If value of img_mask at cur_coordinate is 0, or cur_coordinate is out of bounds (either x,y < 0 or x,y >= width or height of img_mask) return and stop expanding
-
-  # Otherwise, add this to our blob:
-  # Set img_mask at cur_coordinate to 0 so we don't double-count this coordinate if we expand back onto it in the future
-  # Add cur_coordinate to coordinates_in_blob
-  # Call expand on all 4 neighboring coordinates of cur_coordinate (above/below, right/left). Make sure you pass in the same img_mask and coordinates_in_blob objects you were passed so the recursive calls all share the same objects
-
-  if cur_coordinate[0] < 0 or cur_coordinate[1] < 0 or cur_coordinate[0] >= img_mask.shape[0] or cur_coordinate[1] >= img_mask.shape[1]: 
-    return
-  if img_mask[cur_coordinate[0], cur_coordinate[1]] == 0.0: 
-    return
-
-  img_mask[cur_coordinate[0],cur_coordinate[1]] = 0
-  coordinates_in_blob.append(cur_coordinate)
-
-  above = [cur_coordinate[0]-1, cur_coordinate[1]]
-  below = [cur_coordinate[0]+1, cur_coordinate[1]]
-  left = [cur_coordinate[0], cur_coordinate[1]-1]
-  right = [cur_coordinate[0], cur_coordinate[1]+1]
-  for coord in [above, below, left, right]: 
-    expand(img_mask, coord, coordinates_in_blob)
 
 def expand_nr(img_mask, cur_coord):
   # Non-recursive function to find all of the non-zero pixels connected to a location
@@ -169,45 +136,46 @@ def get_blob_centroids(blobs_list):
     object_positions_list.append([yave,xave])
   return object_positions_list
 
+
 def main():
-  global img_height, img_width
-  # Read in image using the imread function
-  img = cv2.imread('./color-blobs.png')
-  add_color_range_to_detect([0,0,200], [0,0,255]) # Detect red
-  add_color_range_to_detect([0,200,0], [0,255,0]) # Detect green
-  add_color_range_to_detect([200,0,0], [255,0,0]) # Detect blue
+    src = 0
+    global color_ranges
+    add_color_range_to_detect([96,39,39], [255,200,200]) # Detect blue
+    cap = cv2.VideoCapture(src)
+    ret, frame = cap.read()
+    img = frame
+    #find_corner(frame)
+        # Create img_mask of all foreground pixels, where foreground is defined as passing the color filter
+    img_mask = do_color_filtering(img)
 
-  ########## PART 1 ############
-  # Create img_mask of all foreground pixels, where foreground is defined as passing the color filter
-  img_mask = do_color_filtering(img)
+    ########## PART 2 ############
+    # Find all the blobs in the img_mask
+    blobs = get_blobs(img_mask)
 
-  ########## PART 2 ############
-  # Find all the blobs in the img_mask
-  blobs = get_blobs(img_mask)
+    ########## PART 3 ############
+    # Get the centroids of the img_mask blobs
+    object_positions_list = get_blob_centroids(blobs)
 
-  ########## PART 3 ############
-  # Get the centroids of the img_mask blobs
-  object_positions_list = get_blob_centroids(blobs)
+    ########## PART 4 (Brad's Homework) ############
+    # Display images and blob annotations
+    img_markup = img.copy()
+    for obj_pos in object_positions_list:
+        obj_pos_vector = np.array(obj_pos).astype(np.int32) # In case your object positions weren't numpy arrays
+        img_markup = cv2.circle(img_markup,(obj_pos_vector[1], obj_pos_vector[0]),5,(0,0,0),10)
+        print("Object pos: " + str(obj_pos_vector))
 
-  ########## PART 4 (Brad's Homework) ############
-  # Display images and blob annotations
-  img_markup = img.copy()
-  for obj_pos in object_positions_list:
-    obj_pos_vector = np.array(obj_pos).astype(np.int32) # In case your object positions weren't numpy arrays
-    img_markup = cv2.circle(img_markup,(obj_pos_vector[1], obj_pos_vector[0]),5,(0,0,0),10)
-    print("Object pos: " + str(obj_pos_vector))
+    # Display the original image, the mask, and the original image with object centers drawn on it
+    # Objective: Show that your algorithm works by displaying the results!
+    #
+    # Approach:
+    # Use the OpenCV imshow() function to display the results of your object detector
+    # Create a window for each image
+    cv2.imshow('orig', img)
+    cv2.imshow('mask', img_mask)
+    cv2.imshow('located', img_markup)
+    cv2.waitKey(-1)  # Wait until a key is pressed to exit the program
+    cv2.destroyAllWindows() # Close all the windows
+    cap.release()
 
-  # Display the original image, the mask, and the original image with object centers drawn on it
-  # Objective: Show that your algorithm works by displaying the results!
-  #
-  # Approach:
-  # Use the OpenCV imshow() function to display the results of your object detector
-  # Create a window for each image
-  cv2.imshow('orig', img)
-  cv2.imshow('mask', img_mask)
-  cv2.imshow('located', img_markup)
-  cv2.waitKey(-1)  # Wait until a key is pressed to exit the program
-  cv2.destroyAllWindows() # Close all the windows
-
-if __name__ == '__main__':
-  main()
+if __name__=="__main__":
+    main()
