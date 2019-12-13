@@ -1,6 +1,5 @@
-import rospy
 import intera_interface
-
+import rospy
 import copy 
 import time
 import json
@@ -34,7 +33,7 @@ def callback_object_location(data):
     objLocationX, objLocationY = data.x, data.y
 
 def init():
-    global g_limb, g_orientation_hand_down, g_position_neutral
+    global g_limb, g_orientation_hand_down, g_position_neutral, end_pos
     rospy.init_node('motion')
     g_limb = intera_interface.Limb('right')
 
@@ -76,6 +75,12 @@ def motion_options(target):
     target_pose = Pose()
     target_pose.orientation = copy.deepcopy(g_orientation_hand_down)
 
+    end_pos = Pose()
+    end_pos.orientation = copy.deepcopy(g_orientation_hand_down)
+    end_pos.position.x = 0.449559195663
+    end_pos.position.y = -0.249912505313
+    end_pos.position.z = 0.112938808947 
+
     if(target == "cup"):
         target_pose.position.x = 0.34 #some number
         target_pose.position.y = 0.0 #some number
@@ -94,6 +99,7 @@ def motion_options(target):
     # Call the IK service to solve for joint angles for the desired pose
     inter_joint_angles = g_limb.ik_request(interPose, "right_hand")
     target_joint_angles = g_limb.ik_request(target_pose, "right_hand")
+    end_joint_angles = g_limb.ik_request(end_pos, "right_hand")
 
     # The IK Service returns false if it can't find a joint configuration
     if target_joint_angles is False:
@@ -118,7 +124,11 @@ def motion_options(target):
     gripper.close()
     time.sleep(2)
     #return to neutral
-    g_limb.move_to_neutral()
+    #g_limb.move_to_neutral()
+
+    #move to end pos
+    g_limb.move_to_joint_positions(end_joint_angles)
+    time.sleep(2)
 
     #open gripper
     gripper.open()
