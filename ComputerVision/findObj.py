@@ -49,7 +49,6 @@ def main():
             else:
                 foundMSG = String()
                 foundMSG.data = "True"
-                publisher_foundobj.publish(foundMSG)
                 posConverter = FindWorldPoseFromPixels(frame)
                 realPos = posConverter.calc_pose(targetLoc)
                 locMSG = Pose2D()
@@ -57,6 +56,7 @@ def main():
                 locMSG.y = realPos[1]
                 locMSG.theta = 0
                 publisher_objloc.publish(locMSG)
+                publisher_foundobj.publish(foundMSG)
     cap.release()
 
 
