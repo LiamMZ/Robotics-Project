@@ -19,6 +19,7 @@ target = None
 foundObj = None
 objLocationX = None
 objLocationY = None
+useLoc = False
 
 def callback_search_target(data):
     global target
@@ -60,7 +61,7 @@ def init():
     g_position_neutral.z = 0.212938808947
 
 def motion_options(target):
-    global g_limb, g_position_neutral, g_orientation_hand_down
+    global g_limb, g_position_neutral, g_orientation_hand_down, useLoc
 
     gripper = intera_interface.Gripper()
     gripper.open()
@@ -93,6 +94,9 @@ def motion_options(target):
         target_pose.position.x = 0.721141027019 #some number
         target_pose.position.y = 0.162193976625 #some number
         target_pose.position.z = 0.0824573129432
+    if useLoc:
+        target_pose.position.x = objLocationX
+        target_pose.position.y = objLocationY
     interPose = copy.deepcopy(target_pose)
     interPose.position.y+=.1
     interPose.position.z = 0.0824573129432
