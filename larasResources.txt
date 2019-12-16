@@ -1,0 +1,26 @@
+https://github.com/RethinkRobotics/sawyer_simulator/blob/master/sawyer_sim_examples/scripts/ik_pick_and_place_demo.py 
+
+https://github.com/rupumped/sawyer_pykdl/blob/master/scripts/sawyer_kinematics.py
+
+https://levelup.gitconnected.com/the-easy-guide-to-python-command-line-arguments-96b4607baea1
+
+run kinematics.forward_position_kinematics()
+
+the pos and orientation variables come from forward kinematics since sawyer and pykdl are not using the same coordinate system
+
+Camera stuff
+#initialize camera
+>>> cameras = intera_interface.Cameras()
+
+#turn cameras on
+>>> cameras.cameras_io['head_camera']['interface'].set_signal_value('camera_streaming',True)
+>>> cameras.cameras_io['right_hand_camera']['interface'].set_signal_value('camera_streaming',True)
+
+#view from head camera perspective
+rosrun image_view image_view image:=/io/internal_camera/head_camera/image_rect_color
+
+#view from wrist camera
+rosrun image_vw image_view image:=/io/internal_camera/right_hand_camera/image_rect
+
+
+
