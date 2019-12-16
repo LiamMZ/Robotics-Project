@@ -1,4 +1,4 @@
- import pdb
+import pdb
 import pickle
 import random
 import copy
@@ -142,7 +142,7 @@ def main():
     global color_ranges
     add_color_range_to_detect([170,39,39], [255,140,120]) # Detect blue
     cap = cv2.VideoCapture(src)
-    ret, frame = cap.read()
+    _, frame = cap.read()
     img = frame
     #find_corner(frame)
         # Create img_mask of all foreground pixels, where foreground is defined as passing the color filter
@@ -163,7 +163,7 @@ def main():
     for obj_pos in object_positions_list:
         obj_pos_vector = np.array(obj_pos).astype(np.int32) # In case your object positions weren't numpy arrays
         img_markup = cv2.circle(img_markup,(obj_pos_vector[1], obj_pos_vector[0]),5,(0,0,0),10)
-        poslist.append([obj_pos_vector[1], obj_pos_vector[0]])
+        posList.append([obj_pos_vector[1], obj_pos_vector[0]])
         
     # Display the original image, the mask, and the original image with object centers drawn on it
     # Objective: Show that your algorithm works by displaying the results!
