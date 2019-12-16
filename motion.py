@@ -12,8 +12,11 @@ g_limb = None
 g_orientation_hand_down = None
 g_position_neutral = None
 
+<<<<<<< HEAD
 end_pos = None
 
+=======
+>>>>>>> 7d798c3d21fe17870c12fde2616f2cbdc7e149b5
 subscriber_voicerec = None
 subscriber_foundobj = None
 subscriber_objectLocation = None
@@ -21,6 +24,10 @@ target = None
 foundObj = None
 objLocationX = None
 objLocationY = None
+<<<<<<< HEAD
+=======
+useLoc = False
+>>>>>>> 7d798c3d21fe17870c12fde2616f2cbdc7e149b5
 
 def callback_search_target(data):
     global target
@@ -61,6 +68,7 @@ def init():
     g_position_neutral.y = 0.16070379419
     g_position_neutral.z = 0.212938808947
 
+<<<<<<< HEAD
     #set end location
     end_pos = Point()
     end_pos.x = 0.332647660893
@@ -69,6 +77,10 @@ def init():
 
 def motion_options(target):
     global g_limb, g_position_neutral, g_orientation_hand_down, end_pos
+=======
+def motion_options(target):
+    global g_limb, g_position_neutral, g_orientation_hand_down, useLoc
+>>>>>>> 7d798c3d21fe17870c12fde2616f2cbdc7e149b5
 
     gripper = intera_interface.Gripper()
     gripper.open()
@@ -83,6 +95,15 @@ def motion_options(target):
     target_pose = Pose()
     target_pose.orientation = copy.deepcopy(g_orientation_hand_down)
 
+<<<<<<< HEAD
+=======
+    end_pos = Pose()
+    end_pos.orientation = copy.deepcopy(g_orientation_hand_down)
+    end_pos.position.x = 0.449559195663
+    end_pos.position.y = -0.249912505313
+    end_pos.position.z = 0.112938808947 
+
+>>>>>>> 7d798c3d21fe17870c12fde2616f2cbdc7e149b5
     if(target == "cup"):
         target_pose.position.x = 0.34 #some number
         target_pose.position.y = 0.0 #some number
@@ -95,6 +116,12 @@ def motion_options(target):
         target_pose.position.x = 0.721141027019 #some number
         target_pose.position.y = 0.162193976625 #some number
         target_pose.position.z = 0.0824573129432
+<<<<<<< HEAD
+=======
+    if useLoc:
+        target_pose.position.x = objLocationX
+        target_pose.position.y = objLocationY
+>>>>>>> 7d798c3d21fe17870c12fde2616f2cbdc7e149b5
     interPose = copy.deepcopy(target_pose)
     interPose.position.y+=.1
     interPose.position.z = 0.0824573129432
@@ -128,8 +155,14 @@ def motion_options(target):
     #return to neutral
     #g_limb.move_to_neutral()
 
+<<<<<<< HEAD
     #move to end position
     g_limb.move_to_joint_positions(end_joint_angles)
+=======
+    #move to end pos
+    g_limb.move_to_joint_positions(end_joint_angles)
+    time.sleep(2)
+>>>>>>> 7d798c3d21fe17870c12fde2616f2cbdc7e149b5
 
     #open gripper
     gripper.open()
