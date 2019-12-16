@@ -39,7 +39,7 @@ def main():
     cap = cv2.VideoCapture(src)
     while not rospy.is_shutdown():
         if target != None:
-            ret, frame = cap.read()
+            _, frame = cap.read()
             target = target
             targetLoc = CV.findTarget(frame, target)
             if targetLoc[0]==-1:

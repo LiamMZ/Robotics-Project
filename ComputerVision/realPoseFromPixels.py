@@ -8,8 +8,8 @@ from colordetection import ColorDetector
 class FindWorldPoseFromPixels:
     def __init__(self, image):
         self.image = image
-        self.upperleft = [-0.437781832879,0.348674242753] #this is (x,y) from cam and (y,x) from sawyer
-        self.lowerRight = [.258586520435,.739727213783]
+        self.upperleft = [-0.454196989865,0.328892665195] #this is (x,y) from cam and (y,x) from sawyer
+        self.lowerRight = [0.227441122039,.752779534673]
         self.CD = ColorDetector(image)
         self.calibrate_camera()
         
