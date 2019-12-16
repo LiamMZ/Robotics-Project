@@ -54,12 +54,16 @@ class ComputerVision:
         
         indices = cv2.dnn.NMSBoxes(boxes, confidences, conf_threshold, nms_threshold)
         indices = [i[0] for i in indices]
+        print(indices)
         class_ids = [class_ids[i] for i in indices]
+        boxes = [boxes[i] for i in indices]
+        # print(class_ids)
+        # print(boxes)
         center = [-1,-1]
         ided = [self.classes[i] for i in class_ids]
         print(ided)
         if target in self.classes:
             if self.classes.index(target) in class_ids:
                 index = class_ids.index(self.classes.index(target))
-                center = [round((boxes[index][0]+boxes[index][2])/2), round((boxes[index][1]+boxes[index][3]))]
+                center = [round((boxes[index][0]+(boxes[index][2]/2))), round((boxes[index][1]+boxes[index][3]))-10]
         return center

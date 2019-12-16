@@ -7,7 +7,7 @@ from std_msgs.msg import String
 r = sr.Recognizer()
 
 with sr.Microphone() as source:
-    print('SAY SOMETHING');
+    print('SAY SOMETHING')
     audio = r.listen(source)
     print("TIME HAS RUN OUT, THANK YOU")
 
@@ -22,14 +22,12 @@ rospy.init_node('voicePub')
 pub = rospy.Publisher('/speech_recognition', String, queue_size=1)
 
 # In case we need to loop
-#rate = rospy.Rate(10)
-#while not rospy.is_shutdown():
-keys = ['bottle', 'cup']
+rate = rospy.Rate(10)
+while not rospy.is_shutdown():
+    keys = ['bottle', 'cup']
+    for i in word.split(' '):
+        if i in keys:
+            #print("That is a valid keyword!")
+            pub.publish(i)
 
-if any(x in word for x in keys):
-    print("That is a valid keyword!")
-    pub.publish(word)
-else:
-    print("ERROR: That is not a valid keyword")
-
-#    rate.sleep()
+        rate.sleep()
