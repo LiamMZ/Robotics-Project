@@ -25,9 +25,9 @@ def draw_prediction(img, class_id, confidence, x, y, x_plus_w, y_plus_h, COLORS)
 
     color = COLORS[class_id]
 
-    #cv2.rectangle(img, (x,y), (x_plus_w,y_plus_h), color, 2)
+    cv2.rectangle(img, (x,y), (x_plus_w,y_plus_h), color, 2)
 
-    #cv2.putText(img, label, (x-10,y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+    cv2.putText(img, label, (x-10,y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
     print(label)
 
 def processFrame(image, args):
