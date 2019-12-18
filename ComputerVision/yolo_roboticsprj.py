@@ -61,9 +61,8 @@ class ComputerVision:
         # print(boxes)
         center = [-1,-1]
         ided = [self.classes[i] for i in class_ids]
-        print(ided)
         if target in self.classes:
             if self.classes.index(target) in class_ids:
                 index = class_ids.index(self.classes.index(target))
-                center = [round((boxes[index][0]+(boxes[index][2]/2))), round((boxes[index][1]+boxes[index][3]))-10]
+                center = [round((boxes[index][0]+(boxes[index][2]/2))), round((boxes[index][1]+boxes[index][3]))]
         return center

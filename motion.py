@@ -82,7 +82,7 @@ def motion_options(target):
     end_pos.orientation = copy.deepcopy(g_orientation_hand_down)
     end_pos.position.x = 0.615720591506
     end_pos.position.y = 0.376089509127
-    end_pos.position.z = 0.151654691433 
+    end_pos.position.z = 0.11 
 
     if(target == "cup"):
         target_pose.position.x = 0.34 #some number
